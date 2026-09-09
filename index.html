@@ -4,39 +4,111 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Auto Fill for TTD Bookings (Unofficial)</title>
+<meta name="description" content="A free browser extension that remembers your family's details and fills the TTD darshan booking form for you. Everything stays in your browser. Unofficial, not affiliated with TTD.">
+<link rel="canonical" href="https://ttdbooking.in/">
+<meta property="og:title" content="Auto Fill for TTD Bookings (Unofficial)">
+<meta property="og:description" content="Save your family's details once. Fill the TTD darshan booking form in one click. No server, no account, no tracking.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ttdbooking.in/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='5' fill='%23b45309'/><g fill='%23fff'><circle cx='12' cy='3.6' r='.9'/><path d='M12 4 L13.5 7 L10.5 7 Z'/><rect x='9.1' y='7.6' width='5.8' height='2' rx='.5'/><rect x='7.7' y='10.4' width='8.6' height='2' rx='.5'/><rect x='6.2' y='13.2' width='11.5' height='2' rx='.5'/><rect x='4.8' y='16' width='14.4' height='2' rx='.5'/></g></svg>">
 <style>
-  :root{color-scheme:light dark}
-  *{box-sizing:border-box;margin:0}
-  body{background:#f8f7f4;color:#1f2937;
-    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-  main{max-width:620px;margin:0 auto;padding:70px 22px 90px}
-  .mark{width:54px;height:54px;border-radius:16px;margin-bottom:22px;display:flex;
-    align-items:center;justify-content:center;color:#fff;
-    background:linear-gradient(135deg,#b45309,#f59e0b)}
-  h1{font-size:27px;line-height:1.25;letter-spacing:-.01em;margin-bottom:8px}
-  .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;
-    text-transform:uppercase;color:#92400e;background:#fdebc8;border-radius:999px;
-    padding:5px 12px;margin-bottom:20px}
-  p{margin:0 0 14px}
-  .muted{color:#6b7280}
-  ul{margin:0 0 16px;padding-left:20px}
-  li{margin:6px 0}
-  a{color:#b45309}
-  .links{margin-top:30px;padding-top:22px;border-top:1px solid #e5e7eb;font-size:15px}
-  .links a{display:inline-block;margin-right:18px}
-  @media (prefers-color-scheme:dark){
-    body{background:#111827;color:#e5e7eb}
-    .muted{color:#9ca3af}
-    a{color:#fbbf24}
-    .links{border-color:#374151}
-    .tag{background:#78350f;color:#fde68a}
+  :root{
+    color-scheme:light dark;
+    --bg:#faf8f4; --panel:#fff; --line:#e7e2d8;
+    --ink:#1f2430; --mute:#6b7280; --soft:#8b8578;
+    --brand:#b45309; --brand-2:#f59e0b; --brand-ink:#92400e;
+    --chip-bg:#fdecca; --chip-ink:#8a4b06;
   }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#12141a; --panel:#191c24; --line:#2c313d;
+      --ink:#e8e8ea; --mute:#a0a4ad; --soft:#8a8f99;
+      --brand:#fbbf24; --brand-2:#f59e0b; --brand-ink:#fbbf24;
+      --chip-bg:#4a2c05; --chip-ink:#fde68a;
+    }
+  }
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:0 22px}
+  a{color:var(--brand)}
+
+  /* header */
+  header{padding:56px 0 0}
+  .mark{width:56px;height:56px;border-radius:17px;display:flex;align-items:center;
+    justify-content:center;color:#fff;background:linear-gradient(140deg,#b45309,#f59e0b);
+    box-shadow:0 6px 20px rgba(180,83,9,.22)}
+  .chip{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--chip-ink);background:var(--chip-bg);
+    border-radius:999px;padding:5px 12px;margin:20px 0 14px}
+  h1{font-size:clamp(28px,6vw,38px);line-height:1.15;letter-spacing:-.02em;margin-bottom:12px}
+  .lede{font-size:18px;line-height:1.6;color:var(--mute);max-width:34em}
+
+  /* buttons */
+  .cta{display:flex;flex-wrap:wrap;gap:11px;margin:26px 0 12px}
+  .btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+    font-size:15px;font-weight:600;padding:12px 20px;border-radius:11px;
+    border:1px solid var(--line);background:var(--panel);color:var(--ink);
+    transition:transform .12s ease,box-shadow .12s ease}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.09)}
+  .btn.primary{background:linear-gradient(140deg,#b45309,#e0850b);border-color:transparent;
+    color:#fff;box-shadow:0 5px 16px rgba(180,83,9,.28)}
+  .btn.primary:hover{box-shadow:0 9px 22px rgba(180,83,9,.34)}
+  .btn svg{flex:none}
+  .btn[aria-disabled="true"]{opacity:.55;pointer-events:none}
+  .free{font-size:13.5px;color:var(--soft)}
+
+  /* disclaimer */
+  .warn{margin:30px 0 0;padding:15px 17px;border-radius:12px;
+    background:var(--panel);border:1px solid var(--line);
+    border-left:3px solid var(--brand-2);font-size:14.5px;line-height:1.6;color:var(--mute)}
+  .warn strong{color:var(--ink)}
+
+  /* sections */
+  section{padding:52px 0 0}
+  h2{font-size:21px;letter-spacing:-.01em;margin-bottom:6px}
+  .sub{color:var(--mute);font-size:15px;margin-bottom:20px}
+
+  ol.steps{list-style:none;padding:0;counter-reset:s;margin:0}
+  ol.steps li{counter-increment:s;position:relative;padding:0 0 22px 46px}
+  ol.steps li:not(:last-child)::after{content:"";position:absolute;left:14px;top:32px;
+    bottom:2px;width:1px;background:var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;
+    width:29px;height:29px;border-radius:50%;display:grid;place-items:center;
+    font-size:13px;font-weight:700;color:#fff;background:var(--brand);
+    background:linear-gradient(140deg,#b45309,#e0850b)}
+  ol.steps b{display:block;font-size:15.5px;margin-bottom:2px}
+  ol.steps p{font-size:14.5px;color:var(--mute);margin:0}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:17px 18px}
+  .card h3{font-size:14.5px;margin-bottom:5px}
+  .card p{font-size:14px;color:var(--mute)}
+
+  details{border-bottom:1px solid var(--line);padding:2px 0}
+  details summary{cursor:pointer;list-style:none;padding:14px 26px 14px 0;position:relative;
+    font-size:15.5px;font-weight:600}
+  details summary::-webkit-details-marker{display:none}
+  details summary::after{content:"+";position:absolute;right:4px;top:11px;
+    font-size:20px;font-weight:400;color:var(--soft)}
+  details[open] summary::after{content:"\2212"}
+  details p{font-size:14.5px;color:var(--mute);padding:0 0 16px;max-width:56em}
+  details p + p{padding-top:0;margin-top:-8px}
+
+  footer{margin-top:60px;padding:26px 0 70px;border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;font-size:14.5px}
+  footer .spacer{flex:1}
+  footer small{color:var(--soft);font-size:13px}
 </style>
 </head>
 <body>
-<main>
+
+<div class="wrap">
+<header>
   <div class="mark">
-    <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="31" height="31" fill="currentColor" aria-hidden="true">
       <circle cx="12" cy="2.9" r="0.95"/>
       <path d="M12 3.3 L13.6 6.4 L10.4 6.4 Z"/>
       <rect x="9.12" y="6.24" width="5.76" height="2.15" rx="0.5"/>
@@ -47,28 +119,156 @@
     </svg>
   </div>
 
-  <span class="tag">Unofficial</span>
-  <h1>Auto Fill for TTD Bookings</h1>
-  <p class="muted">A browser extension that remembers your family&rsquo;s details and fills
-  the TTD darshan booking form for you.</p>
+  <span class="chip">Unofficial &middot; Free</span>
+  <h1>Stop retyping your family&rsquo;s details on every TTD booking.</h1>
+  <p class="lede">A browser extension that remembers who travels with you &mdash; names, ages,
+  photo IDs, contact details &mdash; and fills the TTD darshan booking form in one click.</p>
 
-  <p><strong>Not affiliated with, authorised by, or endorsed by Tirumala Tirupati
-  Devasthanams.</strong> It types into the booking form on your behalf. It never
-  submits, never books, never pays, and never touches captchas.</p>
-
-  <ul>
-    <li>Save your family once &mdash; name, age, gender, photo ID and number.</li>
-    <li>Tick who is travelling, up to six, which is TTD&rsquo;s own limit.</li>
-    <li>One click fills every pilgrim row. You review and submit it yourself.</li>
-  </ul>
-
-  <p><strong>Everything stays in your browser.</strong> There is no server, no account,
-  no analytics and no ads. The extension makes no network requests at all.</p>
-
-  <div class="links">
-    <a href="privacy.html">Privacy policy</a>
-    <a href="mailto:vishnuuu.ai+ttd@gmail.com">Contact</a>
+  <!-- ===== INSTALL LINKS: replace the two href="#" values below once your store listings are live ===== -->
+  <div class="cta">
+    <a class="btn primary" href="https://chromewebstore.google.com/detail/genalfpafblaephdhdnbdfehfphgkalj?utm_source=item-share-cb" aria-disabled="true">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Add to Chrome
+    </a>
+    <a class="btn" href="#" aria-disabled="true">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Add to Firefox
+    </a>
   </div>
-</main>
+  <p class="free">Free, no account, no ads. Works on desktop Chrome, Edge, Brave and Firefox.</p>
+
+  <p class="warn"><strong>Not affiliated with, authorised by, or endorsed by Tirumala Tirupati
+  Devasthanams.</strong> This extension only types into the booking form on your behalf.
+  It never submits the form, never books, never pays, and never touches captchas.
+  It gives you no advantage in obtaining a slot &mdash; it only saves you the typing.</p>
+</header>
+
+<section id="how">
+  <h2>How to use it</h2>
+  <p class="sub">Roughly two minutes to set up, once.</p>
+  <ol class="steps">
+    <li>
+      <b>Install the extension</b>
+      <p>Add it from the Chrome Web Store or Firefox Add-ons, then pin the icon to your toolbar
+      so it is easy to reach.</p>
+    </li>
+    <li>
+      <b>Save your family, once</b>
+      <p>Open the extension and go to Settings. Add each person&rsquo;s full name, age, gender,
+      photo ID type (Aadhaar or Passport) and ID number. Fill in the contact block too &mdash;
+      email, mobile, gothram, country, state, city, pincode and address.</p>
+    </li>
+    <li>
+      <b>Start your booking on the TTD site as usual</b>
+      <p>Log in at the official TTD portal, choose your darshan and date, and go through to the
+      pilgrim details step. The extension only wakes up on TTD&rsquo;s booking pages.</p>
+    </li>
+    <li>
+      <b>Tick who is travelling</b>
+      <p>Open the extension and select the people on this trip &mdash; up to six, which is
+      TTD&rsquo;s own limit per booking.</p>
+    </li>
+    <li>
+      <b>Click Fill</b>
+      <p>Every pilgrim row and the contact section populate instantly.</p>
+    </li>
+    <li>
+      <b>Check it, then submit it yourself</b>
+      <p>Read every field before you continue. You solve the captcha, you make the payment,
+      you press submit. The extension stops the moment the form is filled.</p>
+    </li>
+  </ol>
+</section>
+
+<section id="privacy-summary">
+  <h2>Where your data goes</h2>
+  <p class="sub">Nowhere. That is the whole design.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>No server, no account</h3>
+      <p>There is nothing to sign up for and nothing to sign in to. The extension makes no
+      network requests at all.</p>
+    </div>
+    <div class="card">
+      <h3>Stored on your device</h3>
+      <p>Details live in your browser&rsquo;s own private extension storage, on your computer.
+      They are not synced and not readable by websites.</p>
+    </div>
+    <div class="card">
+      <h3>No analytics, no ads</h3>
+      <p>No telemetry, no tracking, no third-party scripts, and nothing is ever sold or
+      shared with anyone.</p>
+    </div>
+    <div class="card">
+      <h3>Delete it in one click</h3>
+      <p>Settings &rarr; Erase everything wipes it immediately. Uninstalling does the same.</p>
+    </div>
+  </div>
+  <p class="warn" style="margin-top:16px">Aadhaar and passport numbers are sensitive. They are
+  stored unencrypted in your browser profile, much like saved form data, so anyone with access
+  to your computer and profile could read them. On a shared machine, use a separate browser
+  profile. The full detail is in the <a href="privacy.html">privacy policy</a>.</p>
+</section>
+
+<section id="faq">
+  <h2>Questions</h2>
+  <p class="sub">&nbsp;</p>
+
+  <details>
+    <summary>Is this an official TTD app?</summary>
+    <p>No. It is an independent, unofficial tool built by one person. Tirumala Tirupati
+    Devasthanams has not authorised or endorsed it, and it has no connection to TTD.
+    Always book through TTD&rsquo;s own website.</p>
+  </details>
+
+  <details>
+    <summary>Does it help me get a slot, or book faster than others?</summary>
+    <p>No. It does not refresh, queue, retry, or automate the booking in any way. It types
+    details you already saved into a form you already opened. The only thing it saves you
+    is typing.</p>
+  </details>
+
+  <details>
+    <summary>Where exactly is my Aadhaar number kept?</summary>
+    <p>In your browser&rsquo;s private extension storage on your own computer &mdash; not on any
+    server, because there is no server. It is not encrypted, so treat it the way you would
+    treat details saved in your browser&rsquo;s autofill.</p>
+  </details>
+
+  <details>
+    <summary>Can I use it on my phone?</summary>
+    <p>It is a desktop browser extension, so it runs in Chrome, Edge, Brave and Firefox on a
+    computer. Mobile browsers do not support extensions in the same way.</p>
+  </details>
+
+  <details>
+    <summary>Why does it ask for access to the TTD website?</summary>
+    <p>To read the form&rsquo;s fields and type into them. That access is limited to TTD&rsquo;s
+    booking domains &mdash; it requests nothing for any other site.</p>
+  </details>
+
+  <details>
+    <summary>Is it really free?</summary>
+    <p>Yes. After a booking is confirmed, it may once show a UPI QR code inviting a voluntary
+    tip. Nothing is charged, no payment passes through the extension, and &ldquo;Don&rsquo;t ask
+    again&rdquo; stops it permanently.</p>
+  </details>
+
+  <details>
+    <summary>A field did not fill in. What now?</summary>
+    <p>TTD updates its booking form from time to time, which can move or rename fields. Fill
+    the missing ones by hand for now, and please email me what you saw &mdash; that is how the
+    extension gets fixed.</p>
+  </details>
+</section>
+
+<footer>
+  <a href="privacy.html">Privacy policy</a>
+  <a href="mailto:vishnuuu.ai+ttd@gmail.com">Contact</a>
+  <span class="spacer"></span>
+  <small>ttdbooking.in &middot; independent project</small>
+</footer>
+</div>
+
 </body>
 </html>
