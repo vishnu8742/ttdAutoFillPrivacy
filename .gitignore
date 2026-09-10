@@ -1,0 +1,5 @@
+# Local scratch — preview renders, store-listing exports, etc.
+Claude outputs/
+
+# macOS
+.DS_Store
