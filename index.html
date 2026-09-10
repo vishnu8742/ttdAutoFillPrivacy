@@ -4,13 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Auto Fill for TTD Bookings (Unofficial)</title>
-<meta name="description" content="A free browser extension that remembers your family's details and fills the TTD darshan booking form in one click. Nothing leaves your browser. Unofficial — not affiliated with TTD.">
+<meta name="description" content="A free browser extension that saves your family's details once and fills the TTD (Tirumala Tirupati Devasthanams) darshan booking form in one click. Nothing leaves your browser. Unofficial — not affiliated with TTD.">
+<meta name="robots" content="index, follow">
 <link rel="canonical" href="https://ttdbooking.in/">
-<meta property="og:title" content="Auto Fill for TTD Bookings (Unofficial)">
-<meta property="og:description" content="Your family, saved once. Every darshan form filled in a single click. No server, no account, nothing leaves your browser.">
+
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Auto Fill for TTD Bookings">
+<meta property="og:locale" content="en_IN">
 <meta property="og:url" content="https://ttdbooking.in/">
-<meta property="og:image" content="https://ttdbooking.in/assets/popup.png">
+<meta property="og:title" content="Auto Fill for TTD Bookings (Unofficial)">
+<meta property="og:description" content="Your family, saved once. Every TTD darshan booking form filled in a single click. No server, no account, nothing leaves your browser.">
+<meta property="og:image" content="https://ttdbooking.in/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Auto Fill for TTD Bookings — your family, saved once. The darshan form fills itself.">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Auto Fill for TTD Bookings (Unofficial)">
+<meta name="twitter:description" content="Your family, saved once. Every TTD darshan booking form filled in a single click. Nothing leaves your browser.">
+<meta name="twitter:image" content="https://ttdbooking.in/assets/og-image.png">
+
 <meta name="theme-color" content="#fbf7f0">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23b4500f'/><g fill='%23fff'><circle cx='12' cy='3.6' r='.9'/><path d='M12 4 L13.5 7 L10.5 7 Z'/><rect x='9.1' y='7.6' width='5.8' height='2' rx='.5'/><rect x='7.7' y='10.4' width='8.6' height='2' rx='.5'/><rect x='6.2' y='13.2' width='11.5' height='2' rx='.5'/><rect x='4.8' y='16' width='14.4' height='2' rx='.5'/></g></svg>">
 
@@ -215,6 +228,89 @@ footer small{display:block;max-width:44em;margin:0 auto;font-size:13px;
   *{transition:none!important;scroll-behavior:auto!important}
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Auto Fill for TTD Bookings",
+  "alternateName": "TTD Booking Autofill",
+  "url": "https://ttdbooking.in/",
+  "image": "https://ttdbooking.in/assets/og-image.png",
+  "description": "A free, unofficial browser extension that saves your family's details once and fills the TTD (Tirumala Tirupati Devasthanams) darshan booking form in a single click. No server, no account, no analytics — nothing leaves your browser.",
+  "applicationCategory": "BrowserApplication",
+  "operatingSystem": "Chrome, Edge, Brave, Firefox",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  },
+  "isAccessibleForFree": true
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this an official TTD app?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is an independent tool built by one person. Tirumala Tirupati Devasthanams has not authorised or endorsed it, and it has no connection to TTD. Always book through TTD’s own website."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it help me get a slot, or book faster than others?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It does not refresh, queue, retry or automate anything. It types details you already saved into a form you already opened. The only thing it saves is your typing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where exactly is my Aadhaar number kept?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In your browser’s private extension storage on your own computer — not on any server, because there is no server. It is not encrypted, so treat it the way you would treat details saved in your browser’s autofill."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use it on my phone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is a desktop browser extension, so it runs in Chrome, Edge, Brave and Firefox on a computer. Mobile browsers do not support extensions in the same way."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does it need access to the TTD website?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "To read the form’s fields and type into them. That access is limited to TTD’s booking domains — it asks for nothing on any other site."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. After a booking is confirmed it may once show a UPI QR code inviting a voluntary tip. Nothing is charged, no payment passes through the extension, and “Don’t ask again” stops it for good."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "A field did not fill in. What now?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "TTD updates its booking form from time to time, which can move or rename fields. Fill the missing ones by hand for now, and please email me what you saw — that is how this gets fixed."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
